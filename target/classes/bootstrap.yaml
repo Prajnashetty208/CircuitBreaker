@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: orderservice #Should be matching the repo
+  profiles:
+    active: qa
+  #To pick app.yml from cloud config running on 8888
+  cloud:
+    config:
+      uri: http://localhost:8888
+      #then will work on http://localhost:8888/applicationame-qa.properties

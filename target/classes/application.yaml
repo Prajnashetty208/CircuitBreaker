@@ -1,0 +1,39 @@
+server:
+  port: 8555
+
+#Register with  Eureka config
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://localhost:8761/eureka
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventoryservice:
+        register-health-indicator: true
+        ring-buffer-size-in-closed-state: 3
+        ring-buffer-size-in-half-open-state: 2
+        wait-duration-in-open-state: 3s
+        failure-rate-threshold: 50
+        record-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.client.ResourceAccessException
+          - java.lang.IllegalStateException
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
